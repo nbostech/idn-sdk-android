@@ -31,24 +31,7 @@ public class SocialApi {
 
             @Override
             public void onResponse(Call<NewMemberApiModel> call, Response<NewMemberApiModel> response) {
-                if (response.code() == 200) {
-                    if(response.body().getMember() != null && response.body().getToken() != null) {
-                        Prefrences.setAccessToken(context, "Bearer " + response.body().getToken().getAccess_token());
-                        Prefrences.setRefreshToken(context, "Bearer " + response.body().getToken().getRefresh_token());
-                        Prefrences.setFirstName(context, response.body().getMember().getFirstName());
-                        Prefrences.setLastName(context, response.body().getMember().getLastName());
-                        Prefrences.setEmailId(context, response.body().getMember().getEmail());
-                        Prefrences.setUserId(context, response.body().getMember().getId());
-                    }
-                    nbosCallback.onSuccess(response);
-                } else if (response.code() == 400) {
-                    nbosCallback.onValidationError(response.body().getValidationErrors());
-                } else if (response.code() == 401) {
-                    nbosCallback.authenticationError(response.body().getMessage());
-                } else {
-                    nbosCallback.unknownError(response.body().getMessage());
-
-                }
+                nbosCallback.onResponse(response);
             }
 
             @Override
@@ -71,23 +54,15 @@ public class SocialApi {
 
                 @Override
                 public void onResponse(Call<NewMemberApiModel> call, Response<NewMemberApiModel> response) {
-                    if (response.code() == 200) {
                         Prefrences.setAccessToken(context, "Bearer "+response.body().getToken().getAccess_token());
                         Prefrences.setRefreshToken(context,"Bearer "+ response.body().getToken().getRefresh_token());
                         Prefrences.setFirstName(context,response.body().getMember().getFirstName());
                         Prefrences.setLastName(context,response.body().getMember().getLastName());
                         Prefrences.setEmailId(context,response.body().getMember().getEmail());
                         Prefrences.setUserId(context,response.body().getMember().getId());
-                        nbosCallback.onSuccess(response);
-                    } else if (response.code() == 400) {
-                        nbosCallback.onValidationError(response.body().getValidationErrors());
-                    } else if (response.code() == 401) {
-                        nbosCallback.authenticationError(response.body().getMessage());
-                    } else {
-                        nbosCallback.unknownError(response.body().getMessage());
+                        nbosCallback.onResponse(response);
 
                     }
-                }
 
                 @Override
                 public void onFailure(Call<NewMemberApiModel> call, Throwable t) {
@@ -103,7 +78,6 @@ public class SocialApi {
         call.enqueue(new Callback<SocialLogin>() {
             @Override
             public void onResponse(Call<SocialLogin> call, Response<SocialLogin> response) {
-                if (response.code() == 200) {
                     Intent i = new Intent(context, WebViewActivity.class);
                     i.putExtra("name", service);
                     i.putExtra("url", response.body().getUrl());
@@ -111,14 +85,8 @@ public class SocialApi {
                     fragment.startActivityForResult(i,10);
 
       //              nbosCallback.onSuccess(response);
-                } else if (response.code() == 400) {
-                    nbosCallback.onValidationError(response.body().getValidationErrors());
-                } else if (response.code() == 401) {
-                    nbosCallback.authenticationError(response.body().getMessage());
-                } else {
-                    nbosCallback.unknownError(response.body().getMessage());
+                nbosCallback.onResponse(response);
 
-                }
             }
 
             @Override
@@ -147,22 +115,14 @@ public class SocialApi {
             @Override
             public void onResponse(Call<NewMemberApiModel> call, Response<NewMemberApiModel> response) {
                 dialog.dismiss();
-                if (response.code() == 200) {
                     Prefrences.setAccessToken(context, "Bearer " + response.body().getToken().getAccess_token());
                     Prefrences.setRefreshToken(context, "Bearer " + response.body().getToken().getRefresh_token());
                     Prefrences.setFirstName(context,response.body().getMember().getFirstName());
                     Prefrences.setLastName(context,response.body().getMember().getLastName());
                     Prefrences.setEmailId(context,response.body().getMember().getEmail());
                     Prefrences.setUserId(context,response.body().getMember().getId());
-                    nbosCallback.onSuccess(response);
-                } else if (response.code() == 400) {
-                    nbosCallback.onValidationError(response.body().getValidationErrors());
-                } else if (response.code() == 401) {
-                    nbosCallback.authenticationError(response.body().getMessage());
-                } else {
-                    nbosCallback.unknownError(response.body().getMessage());
+                nbosCallback.onResponse(response);
 
-                }
             }
 
             @Override

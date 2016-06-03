@@ -42,34 +42,15 @@ public class WaveLabsSdk {
         getToken(context, getClientId(context, APPLICATION_ID_PROPERTY), getClientSecret(context, APPLICATION_SECRET_PROPERTY), new NBOSCallback<NewTokenResponseModel>() {
 
             @Override
-            public void onSuccess(Response<NewTokenResponseModel> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(Response<NewTokenResponseModel> response) {
                     Prefrences.setClientToken(context, "Bearer " + response.body().getAccess_token());
 
                 }
-            }
 
             @Override
             public void onFailure(Throwable t) {
 
             }
-
-            @Override
-            public void onValidationError(List<ValidationMessagesApiModel> validationError) {
-
-            }
-
-            @Override
-            public void authenticationError(String authenticationError) {
-
-            }
-
-            @Override
-            public void unknownError(String unknownError) {
-
-            }
-
-
 
         });
     }
@@ -117,30 +98,20 @@ public class WaveLabsSdk {
     }
 
 
-    public static void getToken(Context context, String clientId, String clientSecret, final NBOSCallback<NewTokenResponseModel> callback) {
+    public static void getToken(Context context, String clientId, String clientSecret, final NBOSCallback<NewTokenResponseModel> nbosCallback) {
         Call<NewTokenResponseModel> call = StarterClient.getStarterAPI().getToken(clientId, clientSecret, "client_credentials");
         call.enqueue(new Callback<NewTokenResponseModel>() {
 
 
             @Override
             public void onResponse(Call<NewTokenResponseModel> call, Response<NewTokenResponseModel> response) {
-                if (response.code() == 200) {
-                    callback.onSuccess(response);
-                } else if (response.code() == 400) {
-                    callback.onValidationError(response.body().getErrors().getValidationErrors());
-                } else if (response.code() == 401) {
-                    callback.authenticationError(response.body().getMessage());
-                } else {
-                    callback.unknownError(response.body().getMessage());
-
-                }
+                nbosCallback.onResponse(response);
             }
 
 
             @Override
             public void onFailure(Call<NewTokenResponseModel> call, Throwable t) {
 
-                handleFailure();
 
             }
 
@@ -148,10 +119,6 @@ public class WaveLabsSdk {
         });
     }
 
-    private static void handleFailure() {
-        Toast.makeText(context, "Request Timed Out, Please Check Your Connectivity", Toast.LENGTH_SHORT).show();
-
-    }
 
     public static Prefrences getPrefrences(Context context){
         Prefrences prefrences = new Prefrences(context);

@@ -31,18 +31,7 @@ public class MediaApi {
 
             @Override
             public void onResponse(Call<MediaApiModel> call, Response<MediaApiModel> response) {
-                if (response.code() == 200) {
-                    nbosCallback.onSuccess(response);
-                } else if (response.code() == 400) {
-                    nbosCallback.onValidationError(response.body().getErrors().getValidationErrors());
-                } else if (response.code() == 401) {
-                    nbosCallback.authenticationError(response.body().getErrors().getMessage());
-                } else {
-                    nbosCallback.unknownError(response.body().getErrors().getMessage());
-
-                }
-
-
+                nbosCallback.onResponse(response);
             }
 
             @Override
@@ -84,16 +73,8 @@ public class MediaApi {
         call.enqueue(new Callback<MessagesApiModel>() {
             @Override
             public void onResponse(Call<MessagesApiModel> call, Response<MessagesApiModel> response) {
-                if (response.code() == 200) {
-                    nbosCallback.onSuccess(response);
-                } else if (response.code() == 400) {
-                    nbosCallback.onValidationError(response.body().getValidationErrors());
-                } else if (response.code() == 401) {
-                    nbosCallback.authenticationError(response.body().getMessage());
-                } else {
-                    nbosCallback.unknownError(response.body().getMessage());
+                nbosCallback.onResponse(response);
 
-                }
             }
 
             @Override

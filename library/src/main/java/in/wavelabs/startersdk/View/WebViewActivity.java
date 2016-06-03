@@ -58,35 +58,6 @@ public class WebViewActivity extends AppCompatActivity {
                     resultIntent.putExtra("state",state);
                     setResult(Activity.RESULT_OK, resultIntent);
                     finish();
-//                    SocialApi.authorizeAndConnect(WebViewActivity.this, "linkedIn",code, state, new NBOSCallback<MemberApiModel>() {
-//
-//                        @Override
-//                        public void onSuccess(Response<MemberApiModel> response) {
-////                            nbosCallback.onSuccess(response);
-//
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Throwable t) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onValidationError(List<ValidationMessagesApiModel> validationError) {
-//
-//                        }
-//
-//                        @Override
-//                        public void authenticationError(String authenticationError) {
-//
-//                        }
-//
-//                        @Override
-//                        public void unknownError(String unknownError) {
-//
-//                        }
-//                    });
-//                    finish();
                     return true;
                 }
                 return false;

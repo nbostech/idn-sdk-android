@@ -32,16 +32,8 @@ public class AuthApi {
 
             @Override
             public void onResponse(Call<MessagesApiModel> call, Response<MessagesApiModel> response) {
-                if (response.code() == 200) {
-                    nbosCallback.onSuccess(response);
-                } else if (response.code() == 400) {
-                    nbosCallback.onValidationError(response.body().getValidationErrors());
-                } else if (response.code() == 401) {
-                    nbosCallback.authenticationError(response.body().getMessage());
-                } else {
-                    nbosCallback.unknownError(response.body().getMessage());
+                nbosCallback.onResponse(response);
 
-                }
 
             }
 
@@ -72,22 +64,14 @@ public class AuthApi {
 
             @Override
             public void onResponse(Call<NewMemberApiModel> call, Response<NewMemberApiModel> response) {
-                if (response.code() == 200) {
                     Prefrences.setAccessToken(context, "Bearer "+response.body().getToken().getAccess_token());
                     Prefrences.setRefreshToken(context,"Bearer "+ response.body().getToken().getRefresh_token());
                     Prefrences.setFirstName(context,response.body().getMember().getFirstName());
                     Prefrences.setLastName(context,response.body().getMember().getLastName());
                     Prefrences.setEmailId(context,response.body().getMember().getEmail());
                     Prefrences.setUserId(context,response.body().getMember().getId());
-                    nbosCallback.onSuccess(response);
-                } else if (response.code() == 400) {
-                    nbosCallback.onValidationError(response.body().getValidationErrors());
-                } else if (response.code() == 401) {
-                    nbosCallback.authenticationError(response.body().getMessage());
-                } else {
-                    nbosCallback.unknownError(response.body().getMessage());
+                nbosCallback.onResponse(response);
 
-                }
             }
 
             @Override
@@ -115,23 +99,15 @@ public class AuthApi {
 
             @Override
             public void onResponse(Call<NewMemberApiModel> call, Response<NewMemberApiModel> response) {
-                if (response.code() == 200) {
                     Prefrences.setAccessToken(context, "Bearer "+response.body().getToken().getAccess_token());
                     Prefrences.setRefreshToken(context,"Bearer "+ response.body().getToken().getRefresh_token());
                     Prefrences.setFirstName(context,response.body().getMember().getFirstName());
                     Prefrences.setLastName(context,response.body().getMember().getLastName());
                     Prefrences.setEmailId(context,response.body().getMember().getEmail());
                     Prefrences.setUserId(context,response.body().getMember().getId());
-                    nbosCallback.onSuccess(response);
-                } else if (response.code() == 400) {
-                    nbosCallback.onValidationError(response.body().getValidationErrors());
-                } else if (response.code() == 401) {
-                    nbosCallback.authenticationError(response.body().getMessage());
-                } else {
-                    nbosCallback.unknownError(response.body().getMessage());
+                    nbosCallback.onResponse(response);
 
                 }
-            }
 
             @Override
             public void onFailure(Call<NewMemberApiModel> call, Throwable t) {
@@ -148,20 +124,12 @@ public class AuthApi {
 
             @Override
             public void onResponse(Call<NewMemberApiModel> call, Response<NewMemberApiModel> response) {
-                if (response.code() == 200) {
                     SharedPreferences prefs = context.getSharedPreferences("library", Context.MODE_PRIVATE);
                     prefs.edit().clear().apply();
                     WaveLabsSdk.SdkInitialize(context);
-                    nbosCallback.onSuccess(response);
-                } else if (response.code() == 400) {
-                    nbosCallback.onValidationError(response.body().getValidationErrors());
-                } else if (response.code() == 401) {
-                    nbosCallback.authenticationError(response.body().getMessage());
-                } else {
-                    nbosCallback.unknownError(response.body().getMessage());
+                    nbosCallback.onResponse(response);
 
                 }
-            }
 
             @Override
             public void onFailure(Call<NewMemberApiModel> call, Throwable t) {
@@ -184,15 +152,8 @@ public class AuthApi {
 
             @Override
             public void onResponse(Call<MessagesApiModel> call, Response<MessagesApiModel> response) {
-                if (response.code() == 200) {
-                    nbosCallback.onSuccess(response);
-                } else if (response.code() == 400) {
-                    nbosCallback.onValidationError(response.body().getValidationErrors());
-                } else if (response.code() == 401) {
-                    nbosCallback.authenticationError(response.body().getMessage());
-                } else {
-                    nbosCallback.unknownError(response.body().getMessage());
-                }
+                nbosCallback.onResponse(response);
+
             }
 
             @Override

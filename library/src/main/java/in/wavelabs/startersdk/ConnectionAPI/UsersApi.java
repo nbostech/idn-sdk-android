@@ -24,17 +24,7 @@ public static void getUserProfile(final Context context,final NBOSCallback nbosC
 
         @Override
         public void onResponse(Call<MemberApiModel> call, Response<MemberApiModel> response) {
-            if (response.code() == 200) {
-                nbosCallback.onSuccess(response);
-            } else if (response.code() == 400) {
-                nbosCallback.onValidationError(response.body().getErrors().getValidationErrors());
-            } else if (response.code() == 401) {
-                nbosCallback.authenticationError(response.body().getErrors().getMessage());
-            } else {
-                nbosCallback.unknownError(response.body().getErrors().getMessage());
-
-            }
-
+                nbosCallback.onResponse(response);
         }
 
         @Override
@@ -63,16 +53,7 @@ public static void getUserProfile(final Context context,final NBOSCallback nbosC
 
             @Override
             public void onResponse(Call<MemberApiModel> call, Response<MemberApiModel> response) {
-                if (response.code() == 200) {
-                    nbosCallback.onSuccess(response);
-                } else if (response.code() == 400) {
-                    nbosCallback.onValidationError(response.body().getErrors().getValidationErrors());
-                } else if (response.code() == 401) {
-                    nbosCallback.authenticationError(response.body().getErrors().getMessage());
-                } else {
-                    nbosCallback.unknownError(response.body().getErrors().getMessage());
-
-                }
+                nbosCallback.onResponse(response);
 
             }
 
