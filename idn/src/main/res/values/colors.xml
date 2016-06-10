@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="linkedIn">#007bb5</color>
+    <color name="instagram">#125688</color>
+    <color name="github">#32506d</color>
+    <color name="finestBlack">#000000</color>
+    <color name="finestSilver">#A5A5A5</color>
+
+</resources>

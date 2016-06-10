@@ -1,1 +1,0 @@
-# WaveLabs Identity Network SDK
