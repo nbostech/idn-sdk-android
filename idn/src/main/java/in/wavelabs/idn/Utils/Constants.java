@@ -1,4 +1,4 @@
-package in.wavelabs.idn.Utils;
+package in.wavelabs.idn.utils;
 
 /**
  * Created by Vivek on 6/22/15.

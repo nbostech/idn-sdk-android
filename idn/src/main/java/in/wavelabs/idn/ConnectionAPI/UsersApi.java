@@ -2,23 +2,23 @@ package in.wavelabs.idn.ConnectionAPI;
 
 import android.content.Context;
 
+import com.nbos.modules.identity.v0.MemberApiModel;
+
 import in.wavelabs.idn.ConnectionAPI.service.StarterClient;
-import in.wavelabs.idn.DataModel.member.MemberApiModel;
 import in.wavelabs.idn.DataModel.member.UpdateMemberApiModel;
-import in.wavelabs.idn.Utils.Prefrences;
+import in.wavelabs.idn.utils.TokenPrefrences;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Created by vineelanalla on 05/02/16.
+ * Created by Vivek Kiran on 05/02/16.
  */
 public class UsersApi {
 
-public static void getUserProfile(final Context context,final NBOSCallback nbosCallback){
-    String accessToken = Prefrences.getAccessToken(context);
-    Long userId = Prefrences.getUserId(context);
-    Call<MemberApiModel> call = StarterClient.getStarterAPI().getProfile(accessToken, userId);
+public static void getUserProfile(final Context context,String uuid, final NBOSCallback<MemberApiModel>  nbosCallback){
+    String accessToken = TokenPrefrences.getAccessToken(context);
+    Call<MemberApiModel> call = StarterClient.getStarterAPI().getProfile(accessToken, uuid);
     call.enqueue(new Callback<MemberApiModel>() {
 
 
@@ -36,18 +36,15 @@ public static void getUserProfile(final Context context,final NBOSCallback nbosC
     });
 }
 
-    public static void updateProfile(final Context context, String firstName, String lastName,final NBOSCallback nbosCallback){
-        Long phone = Prefrences.getPhoneNumber(context);
-        String description = Prefrences.getDescription(context);
-        Long userId = Prefrences.getUserId(context);
+    public static void updateProfile(final Context context, String firstName, String lastName,Long phone,String description,String uuid,final NBOSCallback<MemberApiModel> nbosCallback){
         UpdateMemberApiModel um = new UpdateMemberApiModel();
         um.setDescription(description);
         um.setFirstName(firstName);
         um.setLastName(lastName);
         um.setPhone(phone);
-        String accessToken = Prefrences.getAccessToken(context);
+        String accessToken = TokenPrefrences.getAccessToken(context);
 
-        Call<MemberApiModel> call = StarterClient.getStarterAPI().updateProfile(accessToken, userId, um);
+        Call<MemberApiModel> call = StarterClient.getStarterAPI().updateProfile(accessToken, uuid, um);
         call.enqueue(new Callback<MemberApiModel>() {
 
 

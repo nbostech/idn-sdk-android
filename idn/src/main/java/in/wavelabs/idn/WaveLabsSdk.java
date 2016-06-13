@@ -9,40 +9,39 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.nbos.modules.identity.v0.TokenApiModel;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import in.wavelabs.idn.ConnectionAPI.NBOSCallback;
 import in.wavelabs.idn.ConnectionAPI.service.StarterClient;
-import in.wavelabs.idn.DataModel.oauth.NewTokenModel;
-import in.wavelabs.idn.DataModel.oauth.NewTokenResponseModel;
-import in.wavelabs.idn.Utils.Prefrences;
+import in.wavelabs.idn.utils.TokenPrefrences;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 ///**
-// * Created by vineelanalla on 17/02/16.
-// */
+// * Created by Vivek Kiran on 17/02/16.
+// *
 public class WaveLabsSdk {
 
     private WaveLabsSdk(Context context){
 
     }
-    static Context context;
-    public static final String APPLICATION_ID_PROPERTY = "in.wavelabs.idn.WAVELABS_CLIENT_ID";
-    public static final String APPLICATION_SECRET_PROPERTY = "in.wavelabs.idn.WAVELABS_CLIENT_SECRET";
+    private static final String APPLICATION_ID_PROPERTY = "in.wavelabs.idn.WAVELABS_CLIENT_ID";
+    private static final String APPLICATION_SECRET_PROPERTY = "in.wavelabs.idn.WAVELABS_CLIENT_SECRET";
 
     public static String clientId;
-    public static String clientSecret;
+    private static String clientSecret;
 
     public static void SdkInitialize(final Context context) {
 
-        getToken(context, getClientId(context, APPLICATION_ID_PROPERTY), getClientSecret(context, APPLICATION_SECRET_PROPERTY), new NBOSCallback<NewTokenResponseModel>() {
+        getToken(context, getClientId(context, APPLICATION_ID_PROPERTY), getClientSecret(context, APPLICATION_SECRET_PROPERTY), new NBOSCallback<TokenApiModel>() {
 
             @Override
-            public void onResponse(Response<NewTokenResponseModel> response) {
-                    Prefrences.setClientToken(context, "Bearer " + response.body().getAccess_token());
+            public void onResponse(Response<TokenApiModel> response) {
+                    TokenPrefrences.setClientToken(context, "Bearer " + response.body().getAccess_token());
                 }
 
             @Override
@@ -96,19 +95,19 @@ public class WaveLabsSdk {
     }
 
 
-    public static void getToken(Context context, String clientId, String clientSecret, final NBOSCallback<NewTokenResponseModel> nbosCallback) {
-        Call<NewTokenResponseModel> call = StarterClient.getStarterAPI().getToken(clientId, clientSecret, "client_credentials");
-        call.enqueue(new Callback<NewTokenResponseModel>() {
+    public static void getToken(Context context, String clientId, String clientSecret, final NBOSCallback<TokenApiModel> nbosCallback) {
+        Call<TokenApiModel> call = StarterClient.getStarterAPI().getToken(clientId, clientSecret, "client_credentials");
+        call.enqueue(new Callback<TokenApiModel>() {
 
 
             @Override
-            public void onResponse(Call<NewTokenResponseModel> call, Response<NewTokenResponseModel> response) {
+            public void onResponse(Call<TokenApiModel> call, Response<TokenApiModel> response) {
                 nbosCallback.onResponse(response);
             }
 
 
             @Override
-            public void onFailure(Call<NewTokenResponseModel> call, Throwable t) {
+            public void onFailure(Call<TokenApiModel> call, Throwable t) {
                 nbosCallback.onFailure(t);
 
 
@@ -117,20 +116,20 @@ public class WaveLabsSdk {
 
         });
     }
-    public static void refreshToken(Context context,String clientId, String clientSecret,final NBOSCallback<NewTokenResponseModel> nbosCallback){
-        String refreshToken = Prefrences.getRefreshToken(context);
-        Call<NewTokenResponseModel> call = StarterClient.getStarterAPI().refreshToken(clientId, clientSecret, "client_credentials",refreshToken);
-        call.enqueue(new Callback<NewTokenResponseModel>() {
+    public static void refreshToken(Context context,String clientId, String clientSecret,final NBOSCallback<TokenApiModel> nbosCallback){
+        String refreshToken = TokenPrefrences.getRefreshToken(context);
+        Call<TokenApiModel> call = StarterClient.getStarterAPI().refreshToken(clientId, clientSecret, "refresh_token",refreshToken);
+        call.enqueue(new Callback<TokenApiModel>() {
 
 
             @Override
-            public void onResponse(Call<NewTokenResponseModel> call, Response<NewTokenResponseModel> response) {
+            public void onResponse(Call<TokenApiModel> call, Response<TokenApiModel> response) {
                 nbosCallback.onResponse(response);
             }
 
 
             @Override
-            public void onFailure(Call<NewTokenResponseModel> call, Throwable t) {
+            public void onFailure(Call<TokenApiModel> call, Throwable t) {
                 nbosCallback.onFailure(t);
 
 
@@ -141,12 +140,6 @@ public class WaveLabsSdk {
 
     }
 
-
-    public static Prefrences getPrefrences(Context context){
-        Prefrences prefrences = new Prefrences(context);
-        prefrences.getSharedPreferences(context);
-        return prefrences;
-    }
 
     public static void generateKeyHash(Context context, String packageName) {
         try {

@@ -1,6 +1,13 @@
 package in.wavelabs.idn.ConnectionAPI.service;
 
 
+import com.nbos.api.v0.RestMessage;
+import com.nbos.modules.identity.v0.MemberApiModel;
+import com.nbos.modules.identity.v0.NewMemberApiModel;
+import com.nbos.modules.identity.v0.SocialConnectUrlResponse;
+import com.nbos.modules.identity.v0.TokenApiModel;
+import com.nbos.modules.media.v0.MediaApiModel;
+
 import java.util.Map;
 
 import in.wavelabs.idn.DataModel.auth.ChangePassword;
@@ -9,13 +16,7 @@ import in.wavelabs.idn.DataModel.auth.DigitsConnect;
 import in.wavelabs.idn.DataModel.auth.Login;
 import in.wavelabs.idn.DataModel.auth.Reset;
 import in.wavelabs.idn.DataModel.auth.SignUp;
-import in.wavelabs.idn.DataModel.auth.social.SocialLogin;
-import in.wavelabs.idn.DataModel.media.MediaApiModel;
-import in.wavelabs.idn.DataModel.member.MemberApiModel;
-import in.wavelabs.idn.DataModel.member.NewMemberApiModel;
 import in.wavelabs.idn.DataModel.member.UpdateMemberApiModel;
-import in.wavelabs.idn.DataModel.oauth.NewTokenResponseModel;
-import in.wavelabs.idn.DataModel.validation.MessagesApiModel;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -31,7 +32,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
- * Created by vinay on 1/1/2016.
+ * Created by Vivek Kiran on 1/1/2016.
  */
 public interface StarterApi {
     String baseIdentityUrl = "/api/identity/v0";
@@ -41,7 +42,7 @@ public interface StarterApi {
     String connectUrl = baseIdentityUrl + "/auth/social/{connectService}/connect";
     String authorizeUrl = baseIdentityUrl + "/auth/social/{authorizeService}/authorize";
     String digitsUrl = baseIdentityUrl + "/auth/social/digits/connect";
-    String profileUrl = baseIdentityUrl + "/users/{userId}";
+    String profileUrl = baseIdentityUrl + "/users/{uuid}";
     String forgotUrl = baseIdentityUrl + "/auth/forgotPassword";
     String changeUrl  =baseIdentityUrl + "/auth/changePassword";
     String logoutUrl = baseIdentityUrl + "/auth/logout";
@@ -50,21 +51,20 @@ public interface StarterApi {
 
     @FormUrlEncoded
     @POST(tokenUrl)
-    Call<NewTokenResponseModel> getToken(@Field("client_id") String clientId, @Field("client_secret") String clientSecret, @Field("grant_type") String grantType);
+    Call<TokenApiModel> getToken(@Field("client_id") String clientId, @Field("client_secret") String clientSecret, @Field("grant_type") String grantType);
     @FormUrlEncoded
     @POST(tokenUrl)
-    Call<NewTokenResponseModel> refreshToken(@Field("client_id") String clientId, @Field("client_secret") String clientSecret, @Field("grant_type") String grantType, @Field("refresh_token") String refreshToken);
-
+    Call<TokenApiModel> refreshToken(@Field("client_id") String clientId, @Field("client_secret") String clientSecret, @Field("grant_type") String grantType, @Field("refresh_token") String refreshToken);
     @POST(loginUrl)
     Call<NewMemberApiModel> login(@Header("Authorization") String authorization, @Body Login login);
     @POST(signupUrl)
     Call<NewMemberApiModel> signup(@Header("Authorization") String authorization, @Body SignUp signUpBody);
     @POST(forgotUrl)
-    Call<MessagesApiModel> forgot(@Header("Authorization") String authorization, @Body Reset resetBody);
+    Call<RestMessage> forgot(@Header("Authorization") String authorization, @Body Reset resetBody);
     @POST(changeUrl)
-    Call<MessagesApiModel> changePassword(@Header("Authorization") String authorization, @Body ChangePassword changePassword);
+    Call<RestMessage> changePassword(@Header("Authorization") String authorization, @Body ChangePassword changePassword);
     @GET(socialLoginUrl)
-    Call<SocialLogin> socialLogin(@Header("Authorization") String authorization, @Path("loginService") String connectService);
+    Call<SocialConnectUrlResponse> socialLogin(@Header("Authorization") String authorization, @Path("loginService") String connectService);
     @GET(authorizeUrl)
     Call<NewMemberApiModel> authorize(@Header("Authorization") String authorization, @Path("authorizeService") String connectService, @Query("code") String code, @Query("state") String state);
     @POST(connectUrl)
@@ -74,14 +74,14 @@ public interface StarterApi {
     @GET(logoutUrl)
     Call<NewMemberApiModel> logout(@Header("Authorization") String authorization);
     @GET(profileUrl)
-    Call<MemberApiModel> getProfile(@Header("Authorization") String authorization, @Path("userId") long userId);
+    Call<MemberApiModel> getProfile(@Header("Authorization") String authorization, @Path("uuid") String uuid);
     @GET(mediaUrl)
-    Call<MediaApiModel> media(@Header("Authorization") String authorization, @Query("id") long userId, @Query("mediafor") String mediafor);
+    Call<MediaApiModel> media(@Header("Authorization") String authorization, @Query("id") String uuid, @Query("mediafor") String mediafor);
     @Multipart
     @POST(mediaUrl)
-    Call<MessagesApiModel> uploadMedia(@Header("Authorization") String authorization, @PartMap Map<String, RequestBody> params);
+    Call<RestMessage> uploadMedia(@Header("Authorization") String authorization, @PartMap Map<String, RequestBody> params);
     @PUT(profileUrl)
-    Call<MemberApiModel> updateProfile(@Header("Authorization") String authorization, @Path("userId") long userId, @Body UpdateMemberApiModel updateMemberApiModel);
+    Call<MemberApiModel> updateProfile(@Header("Authorization") String authorization, @Path("uuid") String uuid, @Body UpdateMemberApiModel updateMemberApiModel);
 
 }
 

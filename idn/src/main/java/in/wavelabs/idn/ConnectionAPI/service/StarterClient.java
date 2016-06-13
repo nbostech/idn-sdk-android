@@ -3,7 +3,7 @@ package in.wavelabs.idn.ConnectionAPI.service;
 
 import java.util.HashMap;
 
-import in.wavelabs.idn.Utils.Constants;
+import in.wavelabs.idn.utils.Constants;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 /**
- * Created by vinay on 1/1/2016.
+ * Created by Vivek Kiran on 1/1/2016.
  */
 public class StarterClient {
     private static final HashMap<Class, Object> apiClients = new HashMap<>();

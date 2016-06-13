@@ -1,4 +1,4 @@
-package in.wavelabs.idn.View;
+package in.wavelabs.idn.view;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,6 +11,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import in.wavelabs.idn.R;
+import in.wavelabs.idn.utils.Constants;
 
 /**
  * Created by vineelanalla on 16/03/16.
@@ -38,7 +39,6 @@ public class WebViewActivity extends AppCompatActivity {
             toolbar.setBackgroundColor(ContextCompat.getColor(WebViewActivity.this,R.color.github));
         }
         final WebView vw = (WebView) findViewById(R.id.webView);
-        final String redirectUrl;
         vw.getSettings().setLoadsImagesAutomatically(true);
         vw.getSettings().setJavaScriptEnabled(true);
       //  vw.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
@@ -46,11 +46,10 @@ public class WebViewActivity extends AppCompatActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 System.out.println(" redirect to: " + url);
-                if( url.startsWith("http://api.qa1.nbos.in")) {
+                if( url.startsWith(Constants.MAIN)) {
                     Uri uri= Uri.parse(url);
                     String  code =  uri.getQueryParameter("code");
                     String state = uri.getQueryParameter("state");
-
                     System.out.println("Now call our API:" + code + state);
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra("service", name);

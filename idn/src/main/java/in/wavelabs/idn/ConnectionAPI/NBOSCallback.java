@@ -3,7 +3,7 @@ package in.wavelabs.idn.ConnectionAPI;
 import retrofit2.Response;
 
 /**
- * Created by vineelanalla on 11/02/16.
+ * Created by Vivek Kiran on 11/02/16.
  */
 public interface NBOSCallback<T> {
 

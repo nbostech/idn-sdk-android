@@ -3,14 +3,15 @@ package in.wavelabs.idn.ConnectionAPI;
 import android.content.Context;
 import android.net.Uri;
 
+import com.nbos.api.v0.RestMessage;
+import com.nbos.modules.media.v0.MediaApiModel;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 import in.wavelabs.idn.ConnectionAPI.service.StarterClient;
-import in.wavelabs.idn.DataModel.media.MediaApiModel;
-import in.wavelabs.idn.DataModel.validation.MessagesApiModel;
-import in.wavelabs.idn.Utils.Prefrences;
+import in.wavelabs.idn.utils.TokenPrefrences;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -18,14 +19,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Created by vineelanalla on 05/02/16.
+ * Created by Vivek Kiran on 05/02/16.
  */
 public class MediaApi {
 
-    public static void getProfileImage(final Context context, final NBOSCallback nbosCallback){
-        Long id = Prefrences.getUserId(context);
-        String accessToken = Prefrences.getAccessToken(context);
-        Call<MediaApiModel> call = StarterClient.getStarterAPI().media(accessToken, id,"profile");
+    public static void getProfileImage(final Context context, String uuid, final NBOSCallback<MediaApiModel> nbosCallback){
+        String accessToken = TokenPrefrences.getAccessToken(context);
+        Call<MediaApiModel> call = StarterClient.getStarterAPI().media(accessToken, uuid,"profile");
         call.enqueue(new Callback<MediaApiModel>() {
 
 
@@ -41,9 +41,9 @@ public class MediaApi {
             }
         });
     }
-    public static void updateProfileImage(Context context, String fileName, long userId,final NBOSCallback<MessagesApiModel> nbosCallback) {
+    public static void updateProfileImage(Context context, String fileName, Long userId,final NBOSCallback<RestMessage> nbosCallback) {
 
-        String accessToken = Prefrences.getAccessToken(context);
+        String accessToken = TokenPrefrences.getAccessToken(context);
         String mediafor = "profile";
         Uri imageUri = Uri.fromFile(new File(fileName));
 
@@ -69,16 +69,16 @@ public class MediaApi {
         //  RequestBody fbody = RequestBody.create(MediaType.parse("image/*"), file);
         //  String filepart = "file\"; filename=\"IMG-20151117-WA0006.jpg\"";
 
-        Call<MessagesApiModel> call = StarterClient.getStarterAPI().uploadMedia(accessToken, map);
-        call.enqueue(new Callback<MessagesApiModel>() {
+        Call<RestMessage> call = StarterClient.getStarterAPI().uploadMedia(accessToken, map);
+        call.enqueue(new Callback<RestMessage>() {
             @Override
-            public void onResponse(Call<MessagesApiModel> call, Response<MessagesApiModel> response) {
+            public void onResponse(Call<RestMessage> call, Response<RestMessage> response) {
                 nbosCallback.onResponse(response);
 
             }
 
             @Override
-            public void onFailure(Call<MessagesApiModel> call, Throwable t) {
+            public void onFailure(Call<RestMessage> call, Throwable t) {
                 nbosCallback.onFailure(t);
             }
 
