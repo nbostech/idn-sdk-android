@@ -109,8 +109,8 @@ properties.load(project.rootProject.file('local.properties').newDataInputStream(
 
 // https://github.com/bintray/gradle-bintray-plugin
 bintray {
-    user = "wavelabs"
-    key = "16f37339b412f2e9b2d90508f22854d667d19808"
+    user = ""
+    key = ""
 
     configurations = ['archives']
     pkg {
@@ -124,7 +124,7 @@ bintray {
         version {
             gpg {
                 sign = true //Determines whether to GPG sign the files. The default is false
-                passphrase = "Vinisoft@123" //Optional. The passphrase for GPG signing'
+                passphrase = "" //Optional. The passphrase for GPG signing'
             }
         }
     }
