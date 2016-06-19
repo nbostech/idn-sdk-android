@@ -2,9 +2,10 @@ package in.wavelabs.idn.ConnectionAPI;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
-import com.nbos.api.v0.RestMessage;
-import com.nbos.modules.identity.v0.NewMemberApiModel;
+import com.nbos.capi.api.v0.RestMessage;
+import com.nbos.capi.modules.identity.v0.NewMemberApiModel;
 
 import in.wavelabs.idn.ConnectionAPI.service.StarterClient;
 import in.wavelabs.idn.DataModel.auth.ChangePassword;
@@ -65,10 +66,13 @@ public class AuthApi {
 
             @Override
             public void onResponse(Call<NewMemberApiModel> call, Response<NewMemberApiModel> response) {
-                    TokenPrefrences.setAccessToken(context, "Bearer "+response.body().getToken().getAccess_token());
-                    TokenPrefrences.setRefreshToken(context,response.body().getToken().getRefresh_token());
-
-                nbosCallback.onResponse(response);
+                if(response.body() !=null) {
+                    TokenPrefrences.setAccessToken(context, "Bearer " + response.body().getToken().getAccess_token());
+                    TokenPrefrences.setRefreshToken(context, response.body().getToken().getRefresh_token());
+                    nbosCallback.onResponse(response);
+                } else {
+                    Toast.makeText(context,"Username already exists",Toast.LENGTH_SHORT).show();
+                }
 
             }
 
@@ -97,15 +101,21 @@ public class AuthApi {
 
             @Override
             public void onResponse(Call<NewMemberApiModel> call, Response<NewMemberApiModel> response) {
-                    TokenPrefrences.setAccessToken(context, "Bearer "+response.body().getToken().getAccess_token());
-                    TokenPrefrences.setRefreshToken(context,response.body().getToken().getRefresh_token());
+                if(response.body() != null) {
+                    TokenPrefrences.setAccessToken(context, "Bearer " + response.body().getToken().getAccess_token());
+                    TokenPrefrences.setRefreshToken(context, response.body().getToken().getRefresh_token());
                     nbosCallback.onResponse(response);
+                } else {
+                    Toast.makeText(context,"Error 400: Bad Request", Toast.LENGTH_SHORT).show();
+                }
 
                 }
 
             @Override
             public void onFailure(Call<NewMemberApiModel> call, Throwable t) {
                 nbosCallback.onFailure(t);
+                Toast.makeText(context,"Error connecting to host, Please Check your Internet Connection", Toast.LENGTH_SHORT).show();
+
             }
 
         });

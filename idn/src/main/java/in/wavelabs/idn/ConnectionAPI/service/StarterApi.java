@@ -1,12 +1,12 @@
 package in.wavelabs.idn.ConnectionAPI.service;
 
 
-import com.nbos.api.v0.RestMessage;
-import com.nbos.modules.identity.v0.MemberApiModel;
-import com.nbos.modules.identity.v0.NewMemberApiModel;
-import com.nbos.modules.identity.v0.SocialConnectUrlResponse;
-import com.nbos.modules.identity.v0.TokenApiModel;
-import com.nbos.modules.media.v0.MediaApiModel;
+import com.nbos.capi.api.v0.RestMessage;
+import com.nbos.capi.modules.identity.v0.MemberApiModel;
+import com.nbos.capi.modules.identity.v0.NewMemberApiModel;
+import com.nbos.capi.modules.identity.v0.SocialConnectUrlResponse;
+import com.nbos.capi.modules.identity.v0.TokenApiModel;
+import com.nbos.capi.modules.media.v0.MediaApiModel;
 
 import java.util.Map;
 

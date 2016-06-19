@@ -9,14 +9,20 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.nbos.modules.identity.v0.TokenApiModel;
+import com.nbos.capi.modules.identity.v0.TokenApiModel;
 
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import in.wavelabs.idn.ConnectionAPI.NBOSCallback;
+import in.wavelabs.idn.ConnectionAPI.OkHttpNBOSCallback;
 import in.wavelabs.idn.ConnectionAPI.service.StarterClient;
 import in.wavelabs.idn.utils.TokenPrefrences;
+import in.wavelabs.ids.IDS;
+import in.wavelabs.ids.IDSClient;
+import in.wavelabs.ids.NetworkApi;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,19 +43,23 @@ public class WaveLabsSdk {
 
     public static void SdkInitialize(final Context context) {
 
-        getToken(context, getClientId(context, APPLICATION_ID_PROPERTY), getClientSecret(context, APPLICATION_SECRET_PROPERTY), new NBOSCallback<TokenApiModel>() {
+        try {
+            getToken(context, getClientId(context, APPLICATION_ID_PROPERTY), getClientSecret(context, APPLICATION_SECRET_PROPERTY), new NBOSCallback<TokenApiModel>() {
 
-            @Override
-            public void onResponse(Response<TokenApiModel> response) {
-                    TokenPrefrences.setClientToken(context, "Bearer " + response.body().getAccess_token());
+                @Override
+                public void onResponse(Response<TokenApiModel> response) {
+                        TokenPrefrences.setClientToken(context, "Bearer " + response.body().getAccess_token());
+                    }
+
+                @Override
+                public void onFailure(Throwable t) {
+
                 }
 
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-
-        });
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -95,7 +105,27 @@ public class WaveLabsSdk {
     }
 
 
-    public static void getToken(Context context, String clientId, String clientSecret, final NBOSCallback<TokenApiModel> nbosCallback) {
+    public static void getToken(Context context, String clientId, String clientSecret, final NBOSCallback<TokenApiModel> nbosCallback) throws IOException {
+
+//        Call<TokenApiModel> call = StarterClient.getStarterAPI().getToken(clientId, clientSecret, "client_credentials");
+//
+//        NetworkApi networkApi = IDS.getModuleApi("identity");
+//        Request request = networkApi.newRequest("/oauth/token")
+//                .build();
+//        okhttp3.Response response = networkApi.get(request, new OkHttpNBOSCallback() {
+//
+//
+//            @Override
+//            public void onResponse(okhttp3.Call call, okhttp3.Response response) {
+//
+//            }
+//
+//            @Override
+//            public void onFailure(okhttp3.Call call, Throwable t) {
+//
+//            }
+//        });
+
         Call<TokenApiModel> call = StarterClient.getStarterAPI().getToken(clientId, clientSecret, "client_credentials");
         call.enqueue(new Callback<TokenApiModel>() {
 
@@ -155,4 +185,6 @@ public class WaveLabsSdk {
 
         }
     }
+
+
 }

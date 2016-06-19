@@ -3,8 +3,8 @@ package in.wavelabs.idn.ConnectionAPI;
 import android.content.Context;
 import android.net.Uri;
 
-import com.nbos.api.v0.RestMessage;
-import com.nbos.modules.media.v0.MediaApiModel;
+import com.nbos.capi.api.v0.RestMessage;
+import com.nbos.capi.modules.media.v0.MediaApiModel;
 
 import java.io.File;
 import java.util.HashMap;
@@ -41,7 +41,7 @@ public class MediaApi {
             }
         });
     }
-    public static void updateProfileImage(Context context, String fileName, Long userId,final NBOSCallback<RestMessage> nbosCallback) {
+    public static void updateProfileImage(Context context, String fileName, String userId,final NBOSCallback<RestMessage> nbosCallback) {
 
         String accessToken = TokenPrefrences.getAccessToken(context);
         String mediafor = "profile";

@@ -2,7 +2,7 @@ package in.wavelabs.idn.ConnectionAPI;
 
 import android.content.Context;
 
-import com.nbos.modules.identity.v0.MemberApiModel;
+import com.nbos.capi.modules.identity.v0.MemberApiModel;
 
 import in.wavelabs.idn.ConnectionAPI.service.StarterClient;
 import in.wavelabs.idn.DataModel.member.UpdateMemberApiModel;

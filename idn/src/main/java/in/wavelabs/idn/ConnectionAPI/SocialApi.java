@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import com.nbos.modules.identity.v0.NewMemberApiModel;
-import com.nbos.modules.identity.v0.SocialConnectUrlResponse;
+import com.nbos.capi.modules.identity.v0.NewMemberApiModel;
+import com.nbos.capi.modules.identity.v0.SocialConnectUrlResponse;
 
 import in.wavelabs.idn.ConnectionAPI.service.StarterClient;
 import in.wavelabs.idn.DataModel.auth.Connect;
