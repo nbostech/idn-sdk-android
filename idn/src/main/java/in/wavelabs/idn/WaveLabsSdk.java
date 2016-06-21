@@ -43,23 +43,6 @@ public class WaveLabsSdk {
 
     public static void SdkInitialize(final Context context) {
 
-        try {
-            getToken(context, getClientId(context, APPLICATION_ID_PROPERTY), getClientSecret(context, APPLICATION_SECRET_PROPERTY), new NBOSCallback<TokenApiModel>() {
-
-                @Override
-                public void onResponse(Response<TokenApiModel> response) {
-                        TokenPrefrences.setClientToken(context, "Bearer " + response.body().getAccess_token());
-                    }
-
-                @Override
-                public void onFailure(Throwable t) {
-
-                }
-
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
 
@@ -104,71 +87,6 @@ public class WaveLabsSdk {
         return clientSecret;
     }
 
-
-    public static void getToken(Context context, String clientId, String clientSecret, final NBOSCallback<TokenApiModel> nbosCallback) throws IOException {
-
-//        Call<TokenApiModel> call = StarterClient.getStarterAPI().getToken(clientId, clientSecret, "client_credentials");
-//
-//        NetworkApi networkApi = IDS.getModuleApi("identity");
-//        Request request = networkApi.newRequest("/oauth/token")
-//                .build();
-//        okhttp3.Response response = networkApi.get(request, new OkHttpNBOSCallback() {
-//
-//
-//            @Override
-//            public void onResponse(okhttp3.Call call, okhttp3.Response response) {
-//
-//            }
-//
-//            @Override
-//            public void onFailure(okhttp3.Call call, Throwable t) {
-//
-//            }
-//        });
-
-        Call<TokenApiModel> call = StarterClient.getStarterAPI().getToken(clientId, clientSecret, "client_credentials");
-        call.enqueue(new Callback<TokenApiModel>() {
-
-
-            @Override
-            public void onResponse(Call<TokenApiModel> call, Response<TokenApiModel> response) {
-                nbosCallback.onResponse(response);
-            }
-
-
-            @Override
-            public void onFailure(Call<TokenApiModel> call, Throwable t) {
-                nbosCallback.onFailure(t);
-
-
-            }
-
-
-        });
-    }
-    public static void refreshToken(Context context,String clientId, String clientSecret,final NBOSCallback<TokenApiModel> nbosCallback){
-        String refreshToken = TokenPrefrences.getRefreshToken(context);
-        Call<TokenApiModel> call = StarterClient.getStarterAPI().refreshToken(clientId, clientSecret, "refresh_token",refreshToken);
-        call.enqueue(new Callback<TokenApiModel>() {
-
-
-            @Override
-            public void onResponse(Call<TokenApiModel> call, Response<TokenApiModel> response) {
-                nbosCallback.onResponse(response);
-            }
-
-
-            @Override
-            public void onFailure(Call<TokenApiModel> call, Throwable t) {
-                nbosCallback.onFailure(t);
-
-
-            }
-
-
-        });
-
-    }
 
 
     public static void generateKeyHash(Context context, String packageName) {

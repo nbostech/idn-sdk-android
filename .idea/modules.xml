@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/idn/idn.iml" filepath="$PROJECT_DIR$/idn/idn.iml" />
       <module fileurl="file://$PROJECT_DIR$/wavelabs-android-client-api.iml" filepath="$PROJECT_DIR$/wavelabs-android-client-api.iml" />
     </modules>
   </component>
