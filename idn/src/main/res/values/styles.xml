@@ -2,8 +2,8 @@
 
     <style name="WebViewTheme.Light" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/finestBlack30</item>
-        <item name="colorPrimaryDark">@color/finestGray</item>
+        <item name="colorPrimary">@color/finestBlack</item>
+        <item name="colorPrimaryDark">@color/finestSilver</item>
         <item name="colorAccent">@color/finestBlack</item>
         <item name="android:textColorPrimary">@color/finestBlack</item>
         <item name="android:textColorSecondary">@color/finestSilver</item>

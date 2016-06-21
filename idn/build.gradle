@@ -47,7 +47,7 @@ dependencies {
     compile 'io.swagger:swagger-jaxrs:1.5.9'
     compile 'io.swagger:swagger-parser:1.0.20'
     compile 'in.wavelabs:api-model:0.2.2'
-    compile 'in.wavelabs:java-api-client:1.0'
+    compile 'in.wavelabs:java-api-client:0.1'
 }
 
 def siteUrl = 'https://github.com/nbostech/wavelabs-android-client-api'      // Homepage URL of the library

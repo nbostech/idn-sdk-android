@@ -42,7 +42,6 @@ public class WaveLabsSdk {
     private static String clientSecret;
 
     public static void SdkInitialize(final Context context) {
-
     }
 
 
