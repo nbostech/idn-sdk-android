@@ -1,4 +1,4 @@
-package in.wavelabs.idn;
+package com.nbos.android.capi;
 
 import org.junit.Test;
 

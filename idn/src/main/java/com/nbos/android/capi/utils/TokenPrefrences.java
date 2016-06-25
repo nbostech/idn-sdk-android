@@ -1,4 +1,4 @@
-package in.wavelabs.idn.utils;
+package in.wavelabs.appIdn.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

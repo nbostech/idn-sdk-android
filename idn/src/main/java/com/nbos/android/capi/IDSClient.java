@@ -1,14 +1,4 @@
-package in.wavelabs.ids;
-
-import android.util.Log;
-
-import com.nbos.capi.modules.identity.v0.TokenApiModel;
-
-import in.wavelabs.idn.ConnectionAPI.OkHttpNBOSCallback;
-import okhttp3.Call;
-import okhttp3.Request;
-import okhttp3.Response;
-import retrofit2.Callback;
+package com.nbos.android.capi;
 
 /**
  * Created by vivekkiran on 6/16/16.

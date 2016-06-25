@@ -1,4 +1,4 @@
-package in.wavelabs.idn.view;
+package com.nbos.android.capi.view;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,8 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import in.wavelabs.idn.R;
-import in.wavelabs.idn.utils.Constants;
+import in.wavelabs.appIdn.R;
+
 
 /**
  * Created by vineelanalla on 16/03/16.
@@ -46,7 +46,7 @@ public class WebViewActivity extends AppCompatActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 System.out.println(" redirect to: " + url);
-                if( url.startsWith(Constants.MAIN)) {
+                if( url.startsWith("http://api.qa1")) {
                     Uri uri= Uri.parse(url);
                     String  code =  uri.getQueryParameter("code");
                     String state = uri.getQueryParameter("state");

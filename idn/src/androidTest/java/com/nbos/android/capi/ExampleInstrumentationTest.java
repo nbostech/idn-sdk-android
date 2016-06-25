@@ -1,4 +1,4 @@
-package in.wavelabs.idn;
+package com.nbos.android.capi;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

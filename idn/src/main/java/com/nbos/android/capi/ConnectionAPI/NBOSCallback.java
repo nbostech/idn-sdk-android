@@ -1,4 +1,4 @@
-package in.wavelabs.idn.ConnectionAPI;
+package com.nbos.android.capi.ConnectionAPI;
 
 import retrofit2.Response;
 
