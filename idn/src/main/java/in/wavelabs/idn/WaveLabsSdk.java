@@ -9,23 +9,8 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.nbos.capi.modules.identity.v0.TokenApiModel;
-
-import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import in.wavelabs.idn.ConnectionAPI.NBOSCallback;
-import in.wavelabs.idn.ConnectionAPI.OkHttpNBOSCallback;
-import in.wavelabs.idn.ConnectionAPI.service.StarterClient;
-import in.wavelabs.idn.utils.TokenPrefrences;
-import in.wavelabs.ids.IDS;
-import in.wavelabs.ids.IDSClient;
-import in.wavelabs.ids.NetworkApi;
-import okhttp3.Request;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 ///**
 // * Created by Vivek Kiran on 17/02/16.
@@ -40,8 +25,8 @@ public class WaveLabsSdk {
 
     public static String clientId;
     private static String clientSecret;
-
     public static void SdkInitialize(final Context context) {
+
     }
 
 
@@ -101,6 +86,7 @@ public class WaveLabsSdk {
         } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
 
         }
+
     }
 
 
