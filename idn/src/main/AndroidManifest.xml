@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="in.wavelabs.appIdn">
+    package="com.nbos.android.capi">
 
     <application
         android:allowBackup="true"
