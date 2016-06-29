@@ -10,7 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import in.wavelabs.appIdn.R;
+import com.nbos.android.capi.R;
 
 
 /**
