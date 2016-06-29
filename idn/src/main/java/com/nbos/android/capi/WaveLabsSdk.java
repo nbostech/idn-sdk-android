@@ -9,69 +9,60 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.nbos.capi.api.v0.AbstractApiContext;
+import com.nbos.capi.api.v0.IdnSDK;
+import com.nbos.capi.api.v0.InMemoryApiContext;
+import com.nbos.capi.api.v0.TokenApiModel;
+import com.nbos.capi.modules.identity.v0.IdentityApi;
+import com.nbos.capi.modules.identity.v0.IdentityRemoteApi;
+import com.nbos.capi.modules.ids.v0.IDS;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 
-///**
-// * Created by Vivek Kiran on 17/02/16.
-// *
-public class WaveLabsSdk {
+/**
+ * Created by vivekkiran on 6/25/16.
+ */
 
-    private WaveLabsSdk(Context context){
+public class AndroidApiContext extends InMemoryApiContext {
 
-    }
-    private static final String APPLICATION_ID_PROPERTY = "in.wavelabs.idn.WAVELABS_CLIENT_ID";
-    private static final String APPLICATION_SECRET_PROPERTY = "in.wavelabs.idn.WAVELABS_CLIENT_SECRET";
+    private static final String APPLICATION_ID_PROPERTY = "in.nbos.idn.CLIENT_ID";
+    private static final String APPLICATION_SECRET_PROPERTY = "in.nbos.idn.CLIENT_SECRET";
 
     public static String clientId;
     private static String clientSecret;
-    public static void SdkInitialize(final Context context) {
-
+    public static void initialize(final Context context) {
+        IdnSDK.init(new AndroidApiContext());
+        HashMap map = new HashMap();
+        map.put("client_id",getConfig(context,APPLICATION_ID_PROPERTY));
+        map.put("client_secret",getConfig(context,APPLICATION_SECRET_PROPERTY));
+        AbstractApiContext.get().setClientCredentials(map);
+        getClientToken();
+    }
+    private static void getClientToken(){
+        IdentityApi identityApi = IDS.getModuleApi("identity");
+        IdentityRemoteApi remoteApi = identityApi.getRemoteApi();
+        Map map = AbstractApiContext.get().getClientCredentials();
+        String clientId = (String)map.get("client_id");
+        String secret = (String)map.get("client_secret");
+        //CallremoteApi.getToken(clientId,secret,"client_credentials");
     }
 
-
-    public static String getClientId(Context context, String name) {
-
+    public static String getConfig(Context context, String name) {
+        String val = "";
         try {
             ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(
                     context.getPackageName(), PackageManager.GET_META_DATA);
             if (appInfo.metaData != null) {
-                System.out.println(appInfo.metaData.getString(name));
-                clientId = String.valueOf(appInfo.metaData.getString(name));
-
-                return appInfo.metaData.getString(name);
+                String prop = String.valueOf(appInfo.metaData.getString(name));
+                return appInfo.metaData.getString(prop);
             }
         } catch (PackageManager.NameNotFoundException e) {
-// if we can’t find it in the manifest, just return null
-            Toast.makeText(context, "Client Id Missing! Have you declared it in your manifest file?", Toast.LENGTH_SHORT).show();
-            System.out.println("Client Id Missing! Have you declared it in your manifest file?");
-            e.printStackTrace();
+            Toast.makeText(context, "Missing Config: " + name, Toast.LENGTH_SHORT).show();
         }
-        return clientId;
-
+        return val;
     }
-
-    public static String getClientSecret(Context context, String name) {
-
-        try {
-            ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(
-                    context.getPackageName(), PackageManager.GET_META_DATA);
-            if (appInfo.metaData != null) {
-                System.out.println(appInfo.metaData.getString(name));
-                clientSecret = String.valueOf(appInfo.metaData.getString(name));
-
-                return appInfo.metaData.getString(name);
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-// if we can’t find it in the manifest, just return null
-            Toast.makeText(context, "Client Secret Missing! Have you declared it in your manifest file?", Toast.LENGTH_SHORT).show();
-            System.out.println("Client Secret Missing! Have you declared it in your manifest file?");
-            e.printStackTrace();
-        }
-        return clientSecret;
-    }
-
-
 
     public static void generateKeyHash(Context context, String packageName) {
         try {
@@ -89,5 +80,18 @@ public class WaveLabsSdk {
 
     }
 
+    @Override
+    public TokenApiModel getToken(String s) {
+        return null;
+    }
+
+    public String getHost(String moduleName) {
+        if(moduleName.equals("identity")) {
+            return "http://api.qa1.nbos.in/";
+        } else if(moduleName.equals("cafeteria")) {
+            return "";
+        }
+        return "http://api.qa1.nbos.in/";
+    }
 
 }
