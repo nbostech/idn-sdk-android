@@ -88,6 +88,7 @@ public class AndroidApiContext extends InMemoryApiContext {
         return null;
     }
 
+    // TODO: @Vivek to get this from confi, similar to client id & secret
     public String getHost(String moduleName) {
         String h="";
         if(moduleName.equals("identity")) {
