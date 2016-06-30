@@ -41,6 +41,27 @@ public class AndroidApiContext extends InMemoryApiContext {
         IdnSDK.init(new AndroidApiContext(context));
     }
 
+    // CLIENT TOKEN set/get
+//    public void setClientToken(TokenApiModel tokenApiModel) {
+//        //store.put("token.client",tokenApiModel);
+//        // save in SharedPrefererences
+//    }
+//    public TokenApiModel getClientToken() {
+//        //return (TokenApiModel)store.get("token.client");
+//        // retrieve from Shared preferences
+//    }
+//
+//    // USER TOKEN set/get
+//    public void setUserToken(TokenApiModel tokenApiModel) {
+//        //store.put("token.user",tokenApiModel);
+//        // save in SharedPrefererences
+//    }
+//    public TokenApiModel getUserToken() {
+//        //return (TokenApiModel)store.get("token.user");
+//        // retrieve from Shared preferences
+//    }
+
+
 
     public void init() {
         HashMap map = new HashMap();
