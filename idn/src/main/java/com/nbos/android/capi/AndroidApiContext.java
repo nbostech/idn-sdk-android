@@ -30,36 +30,41 @@ public class AndroidApiContext extends InMemoryApiContext {
     private static final String APPLICATION_ID_PROPERTY = "in.nbos.idn.CLIENT_ID";
     private static final String APPLICATION_SECRET_PROPERTY = "in.nbos.idn.CLIENT_SECRET";
 
-    public static String clientId;
-    private static String clientSecret;
-    public static void initialize(final Context context) {
-        IdnSDK.init(new AndroidApiContext());
-        HashMap map = new HashMap();
-        map.put("client_id",getConfig(context,APPLICATION_ID_PROPERTY));
-        map.put("client_secret",getConfig(context,APPLICATION_SECRET_PROPERTY));
-        AbstractApiContext.get().setClientCredentials(map);
-        getClientToken();
-    }
-    private static void getClientToken(){
-        IdentityApi identityApi = IDS.getModuleApi("identity");
-        IdentityRemoteApi remoteApi = identityApi.getRemoteApi();
-        Map map = AbstractApiContext.get().getClientCredentials();
-        String clientId = (String)map.get("client_id");
-        String secret = (String)map.get("client_secret");
-        //CallremoteApi.getToken(clientId,secret,"client_credentials");
+    Context androidContext;
+
+    public AndroidApiContext(final Context context) {
+        this.androidContext=context;
     }
 
-    public static String getConfig(Context context, String name) {
+
+    public static void initialize(final Context context) {
+        IdnSDK.init(new AndroidApiContext(context));
+        IdentityApi identityApi = IDS.getModuleApi("identity");
+        identityApi.getClientToken();
+    }
+
+
+    public void init() {
+        HashMap map = new HashMap();
+        // TODO: @Vivek figure out why this value isn't being retrieved from config.
+//        map.put("client_id",getConfig(androidContext,APPLICATION_ID_PROPERTY));
+//        map.put("client_secret",getConfig(androidContext,APPLICATION_SECRET_PROPERTY));
+        map.put("client_id","sample-app-client");
+        map.put("client_secret","sample-app-secret");
+        AbstractApiContext.get().setClientCredentials(map);
+    }
+
+    public String getConfig(String name) {
         String val = "";
         try {
-            ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(
-                    context.getPackageName(), PackageManager.GET_META_DATA);
+            ApplicationInfo appInfo = androidContext.getPackageManager().getApplicationInfo(
+                    androidContext.getPackageName(), PackageManager.GET_META_DATA);
             if (appInfo.metaData != null) {
                 String prop = String.valueOf(appInfo.metaData.getString(name));
                 return appInfo.metaData.getString(prop);
             }
         } catch (PackageManager.NameNotFoundException e) {
-            Toast.makeText(context, "Missing Config: " + name, Toast.LENGTH_SHORT).show();
+            Toast.makeText(androidContext, "Missing Config: " + name, Toast.LENGTH_SHORT).show();
         }
         return val;
     }
@@ -86,12 +91,14 @@ public class AndroidApiContext extends InMemoryApiContext {
     }
 
     public String getHost(String moduleName) {
+        String h="";
         if(moduleName.equals("identity")) {
-            return "http://api.qa1.nbos.in/";
+            h="http://api.qa1.nbos.in/";
         } else if(moduleName.equals("cafeteria")) {
-            return "";
+            h="";
         }
-        return "http://api.qa1.nbos.in/";
+        if(h.length()>0)return h;
+        else return "http://api.qa1.nbos.in/"; // default to idn
     }
 
 }
