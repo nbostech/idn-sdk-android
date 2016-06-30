@@ -39,8 +39,6 @@ public class AndroidApiContext extends InMemoryApiContext {
 
     public static void initialize(final Context context) {
         IdnSDK.init(new AndroidApiContext(context));
-        IdentityApi identityApi = IDS.getModuleApi("identity");
-        identityApi.getClientToken();
     }
 
 
