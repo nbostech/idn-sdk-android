@@ -1,15 +1,18 @@
 package com.nbos.android.capi;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.content.res.AssetManager;
+import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.nbos.capi.api.v0.AbstractApiContext;
 import com.nbos.capi.api.v0.IdnSDK;
 import com.nbos.capi.api.v0.InMemoryApiContext;
@@ -28,6 +31,7 @@ import java.util.Properties;
 
 public class AndroidApiContext extends InMemoryApiContext {
 
+    private static final String PREF_NAME = "idn.token";
     private static final String APPLICATION_ID_PROPERTY = "in.nbos.idn.CLIENT_ID";
     private static final String APPLICATION_SECRET_PROPERTY = "in.nbos.idn.CLIENT_SECRET";
 
@@ -44,26 +48,48 @@ public class AndroidApiContext extends InMemoryApiContext {
 
 
     // CLIENT TOKEN set/get
-//    public void setClientToken(TokenApiModel tokenApiModel) {
-//        //store.put("token.client",tokenApiModel);
-//        TokenPrefrences.setClientToken(androidContext);
-//        // save in SharedPrefererences
-//    }
-//    public TokenApiModel getClientToken() {
-//        //return (TokenApiModel)store.get("token.client");
-//        // retrieve from Shared preferences
-//    }
+    public void setClientToken(TokenApiModel tokenApiModel) {
+        SharedPreferences sharedPreferences = androidContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String stringUser = gson.toJson(tokenApiModel);
+        sharedPreferences.edit().putString("token.client", stringUser).apply();
+        super.setUserToken(tokenApiModel);
+    }
+    public TokenApiModel getClientToken() {
+        TokenApiModel tokenApiModel = super.getUserToken();
+        if(tokenApiModel!=null) {
+            return tokenApiModel;
+        }
+        SharedPreferences sharedPreferences = androidContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        String token = sharedPreferences.getString("token.client", "");
+        Gson gson = new Gson();
+        tokenApiModel = gson.fromJson(token, TokenApiModel.class);
+        setUserToken(tokenApiModel);
+        return tokenApiModel;
+    }
 //
 //    // USER TOKEN set/get
-//    public void setUserToken(TokenApiModel tokenApiModel) {
-//        //store.put("token.user",tokenApiModel);
-//        // save in SharedPrefererences
-//    }
-//    public TokenApiModel getUserToken() {
-//        //return (TokenApiModel)store.get("token.user");
-//        // retrieve from Shared preferences
-//    }
+    public void setUserToken(TokenApiModel tokenApiModel) {
+        // save in SharedPrefererences
+        SharedPreferences sharedPreferences = androidContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String stringUser = gson.toJson(tokenApiModel);
+        sharedPreferences.edit().putString("token.user", stringUser).apply();
+        super.setUserToken(tokenApiModel);
+    }
 
+    public TokenApiModel getUserToken() {
+          TokenApiModel tokenApiModel = super.getUserToken();
+          if(tokenApiModel!=null) {
+              return tokenApiModel;
+          }
+        SharedPreferences sharedPreferences = androidContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        String token = sharedPreferences.getString("token.user", "");
+        Gson gson = new Gson();
+        tokenApiModel = gson.fromJson(token, TokenApiModel.class);
+        setUserToken(tokenApiModel);
+        return tokenApiModel;
+    }
 
 
     public void init() {
@@ -115,7 +141,6 @@ public class AndroidApiContext extends InMemoryApiContext {
     // TODO: @Vivek to get this from confi, similar to client id & secret
     public String getHost(String moduleName) {
         String h="";
-//        String packageName = androidContext.getPackageName();
         Properties properties = new Properties();;
         AssetManager assetManager = androidContext.getAssets();
         InputStream inputStream = null;
@@ -140,23 +165,6 @@ public class AndroidApiContext extends InMemoryApiContext {
                 return "http://api.qa1.nbos.in/";
             }
         }
-
-//        Field[] fields =  R.string.class.getFields(); // or Field[] fields = R.string.class.getFields();
-//        String str = "";
-//
-//        for(Field i : fields) {
-//            if (i.getName().startsWith("module.")) {
-//                int resId = androidContext.getResources().getIdentifier(i.getName(), "string", packageName);
-//                str += i.getName().startsWith("module.");
-//                if (resId != 0) {
-//                    str += androidContext.getResources().getString(resId);
-//                }
-//                str += "\n";
-//            }
-//        }
-
-//        int strings = androidContext.getResources().getIdentifier("","string",packageName);
-
         return h;
     }
 }

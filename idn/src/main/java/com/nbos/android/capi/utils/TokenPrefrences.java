@@ -21,7 +21,7 @@ public class TokenPrefrences {
 
     public static String getClientToken(Context context) {
         sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        return sharedPreferences.getString("clientToken", "");
+        return sharedPreferences.getString("client.token", "");
     }
 
     public static void setAccessToken(Context context, String accessToken) {
