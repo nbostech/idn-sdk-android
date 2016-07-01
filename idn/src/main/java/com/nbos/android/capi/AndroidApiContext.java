@@ -68,19 +68,21 @@ public class AndroidApiContext extends InMemoryApiContext {
         // TODO: @Vivek figure out why this value isn't being retrieved from config.
 //        map.put("client_id",getConfig(androidContext,APPLICATION_ID_PROPERTY));
 //        map.put("client_secret",getConfig(androidContext,APPLICATION_SECRET_PROPERTY));
-        map.put("client_id","sample-app-client");
-        map.put("client_secret","sample-app-secret");
+        String clientId = getConfig(APPLICATION_ID_PROPERTY);
+        String clientSecret = getConfig(APPLICATION_SECRET_PROPERTY);
+        map.put("client_id",clientId);
+        map.put("client_secret",clientSecret);
         AbstractApiContext.get().setClientCredentials(map);
     }
 
-    public String getConfig(String name) {
+    private String getConfig(String name) {
         String val = "";
         try {
             ApplicationInfo appInfo = androidContext.getPackageManager().getApplicationInfo(
                     androidContext.getPackageName(), PackageManager.GET_META_DATA);
             if (appInfo.metaData != null) {
-                String prop = String.valueOf(appInfo.metaData.getString(name));
-                return appInfo.metaData.getString(prop);
+                val = String.valueOf(appInfo.metaData.getString(name));
+                return val;
             }
         } catch (PackageManager.NameNotFoundException e) {
             Toast.makeText(androidContext, "Missing Config: " + name, Toast.LENGTH_SHORT).show();
