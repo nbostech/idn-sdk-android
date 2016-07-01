@@ -16,7 +16,7 @@ public class TokenPrefrences {
 
     public static void setClientToken(Context context, String clientToken) {
         sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        sharedPreferences.edit().putString("clientToken", clientToken).apply();
+        sharedPreferences.edit().putString("token.client", clientToken).apply();
     }
 
     public static String getClientToken(Context context) {

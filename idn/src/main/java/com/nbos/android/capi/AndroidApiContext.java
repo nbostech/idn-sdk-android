@@ -5,6 +5,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.content.res.AssetManager;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
@@ -17,10 +18,13 @@ import com.nbos.capi.modules.ids.v0.IDS;
 import com.nbos.capi.modules.ids.v0.IdsRemoteApi;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import io.swagger.models.Swagger;
 import io.swagger.parser.Swagger20Parser;
@@ -48,6 +52,7 @@ public class AndroidApiContext extends InMemoryApiContext {
     public static void initialize(final Context context) {
         IdnSDK.init(new AndroidApiContext(context));
     }
+
 
     // CLIENT TOKEN set/get
 //    public void setClientToken(TokenApiModel tokenApiModel) {
@@ -97,6 +102,7 @@ public class AndroidApiContext extends InMemoryApiContext {
     }
 
     public static void generateKeyHash(Context context, String packageName) {
+
         try {
             PackageInfo info = context.getPackageManager().getPackageInfo(
                     packageName,
@@ -119,26 +125,49 @@ public class AndroidApiContext extends InMemoryApiContext {
 
     // TODO: @Vivek to get this from confi, similar to client id & secret
     public String getHost(String moduleName) {
-            //TODO: Get Host From Module Name
-            final String[] host = new String[1];
-            IdsRemoteApi idsRemoteApi = IDS.getIDSApi();
-            idsRemoteApi.getModApiJson(moduleName).enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    Swagger20Parser parser = new Swagger20Parser();
-                    try {
-                        Swagger sw = parser.parse(response.body().string());
-                        System.out.println(sw.getHost());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+        String h="";
+//        String packageName = androidContext.getPackageName();
+        Properties properties = new Properties();;
+        AssetManager assetManager = androidContext.getAssets();
+        InputStream inputStream = null;
+        try {
+            inputStream = assetManager.open("config.properties");
+            properties.load(inputStream);
 
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                }
-            });
-            return host[0];
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        for(String key: properties.stringPropertyNames()){
+            if(key.startsWith("module.")){
+                String val = properties.getProperty(key);
+                System.out.println("Values ::" + val);
+                System.out.println("Module ::" +key);
+                if(moduleName.contains("identity")) {
+                    h="http://api.qa1.nbos.in/";
+                } else if(moduleName.contains("cafeteria")) {
+                    h="";
+                }
+            } else  {
+                return "http://api.qa1.nbos.in/";
+            }
+        }
+
+//        Field[] fields =  R.string.class.getFields(); // or Field[] fields = R.string.class.getFields();
+//        String str = "";
+//
+//        for(Field i : fields) {
+//            if (i.getName().startsWith("module.")) {
+//                int resId = androidContext.getResources().getIdentifier(i.getName(), "string", packageName);
+//                str += i.getName().startsWith("module.");
+//                if (resId != 0) {
+//                    str += androidContext.getResources().getString(resId);
+//                }
+//                str += "\n";
+//            }
+//        }
+
+//        int strings = androidContext.getResources().getIdentifier("","string",packageName);
+
+        return h;
+    }
 }
