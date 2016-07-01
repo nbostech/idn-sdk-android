@@ -16,7 +16,7 @@ import com.nbos.android.capi.R;
 /**
  * Created by vineelanalla on 16/03/16.
  */
-public class WebViewActivity extends AppCompatActivity {
+public class SocialWebViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,15 +28,15 @@ public class WebViewActivity extends AppCompatActivity {
         final String name = intent.getStringExtra("name");
         String url = intent.getStringExtra("url");
         getSupportActionBar().setTitle(name);
-        toolbar.setTitleTextColor(ContextCompat.getColor(WebViewActivity.this,R.color.finestWhite));
+        toolbar.setTitleTextColor(ContextCompat.getColor(SocialWebViewActivity.this,R.color.finestWhite));
         if(name.contains("linkedIn")){
-            toolbar.setBackgroundColor(ContextCompat.getColor(WebViewActivity.this,R.color.linkedIn));
+            toolbar.setBackgroundColor(ContextCompat.getColor(SocialWebViewActivity.this,R.color.linkedIn));
         }
         if(name.contains("instagram")){
-            toolbar.setBackgroundColor(ContextCompat.getColor(WebViewActivity.this,R.color.instagram));
+            toolbar.setBackgroundColor(ContextCompat.getColor(SocialWebViewActivity.this,R.color.instagram));
         }
         if(name.contains("github")){
-            toolbar.setBackgroundColor(ContextCompat.getColor(WebViewActivity.this,R.color.github));
+            toolbar.setBackgroundColor(ContextCompat.getColor(SocialWebViewActivity.this,R.color.github));
         }
         final WebView vw = (WebView) findViewById(R.id.webView);
         vw.getSettings().setLoadsImagesAutomatically(true);
