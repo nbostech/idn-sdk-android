@@ -14,24 +14,13 @@ import com.nbos.capi.api.v0.AbstractApiContext;
 import com.nbos.capi.api.v0.IdnSDK;
 import com.nbos.capi.api.v0.InMemoryApiContext;
 import com.nbos.capi.api.v0.TokenApiModel;
-import com.nbos.capi.modules.ids.v0.IDS;
-import com.nbos.capi.modules.ids.v0.IdsRemoteApi;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
-
-import io.swagger.models.Swagger;
-import io.swagger.parser.Swagger20Parser;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by vivekkiran on 6/25/16.
