@@ -13,13 +13,21 @@ import com.nbos.capi.api.v0.AbstractApiContext;
 import com.nbos.capi.api.v0.IdnSDK;
 import com.nbos.capi.api.v0.InMemoryApiContext;
 import com.nbos.capi.api.v0.TokenApiModel;
-import com.nbos.capi.modules.identity.v0.IdentityApi;
-import com.nbos.capi.modules.identity.v0.IdentityRemoteApi;
 import com.nbos.capi.modules.ids.v0.IDS;
+import com.nbos.capi.modules.ids.v0.IdsRemoteApi;
+
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+
+import io.swagger.models.Swagger;
+import io.swagger.parser.Swagger20Parser;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by vivekkiran on 6/25/16.
@@ -44,6 +52,7 @@ public class AndroidApiContext extends InMemoryApiContext {
     // CLIENT TOKEN set/get
 //    public void setClientToken(TokenApiModel tokenApiModel) {
 //        //store.put("token.client",tokenApiModel);
+//        TokenPrefrences.setClientToken(androidContext);
 //        // save in SharedPrefererences
 //    }
 //    public TokenApiModel getClientToken() {
@@ -65,9 +74,6 @@ public class AndroidApiContext extends InMemoryApiContext {
 
     public void init() {
         HashMap map = new HashMap();
-        // TODO: @Vivek figure out why this value isn't being retrieved from config.
-//        map.put("client_id",getConfig(androidContext,APPLICATION_ID_PROPERTY));
-//        map.put("client_secret",getConfig(androidContext,APPLICATION_SECRET_PROPERTY));
         String clientId = getConfig(APPLICATION_ID_PROPERTY);
         String clientSecret = getConfig(APPLICATION_SECRET_PROPERTY);
         map.put("client_id",clientId);
@@ -113,14 +119,26 @@ public class AndroidApiContext extends InMemoryApiContext {
 
     // TODO: @Vivek to get this from confi, similar to client id & secret
     public String getHost(String moduleName) {
-        String h="";
-        if(moduleName.equals("identity")) {
-            h="http://api.qa1.nbos.in/";
-        } else if(moduleName.equals("cafeteria")) {
-            h="";
-        }
-        if(h.length()>0)return h;
-        else return "http://api.qa1.nbos.in/"; // default to idn
-    }
+            //TODO: Get Host From Module Name
+            final String[] host = new String[1];
+            IdsRemoteApi idsRemoteApi = IDS.getIDSApi();
+            idsRemoteApi.getModApiJson(moduleName).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    Swagger20Parser parser = new Swagger20Parser();
+                    try {
+                        Swagger sw = parser.parse(response.body().string());
+                        System.out.println(sw.getHost());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
 
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                }
+            });
+            return host[0];
+        }
 }
