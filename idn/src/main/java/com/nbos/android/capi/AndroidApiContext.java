@@ -36,6 +36,7 @@ public class AndroidApiContext extends InMemoryApiContext {
     private static final String APPLICATION_SECRET_PROPERTY = "in.nbos.idn.CLIENT_SECRET";
 
     Context androidContext;
+    Properties configProperties;
 
     public AndroidApiContext(final Context context) {
         this.androidContext=context;
@@ -46,47 +47,38 @@ public class AndroidApiContext extends InMemoryApiContext {
         IdnSDK.init(new AndroidApiContext(context));
     }
 
+    protected SharedPreferences getSharedPreferences() {
+        return androidContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+    }
 
     // CLIENT TOKEN set/get
     public void setClientToken(TokenApiModel tokenApiModel) {
-        SharedPreferences sharedPreferences = androidContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        Gson gson = new Gson();
-        String stringUser = gson.toJson(tokenApiModel);
-        sharedPreferences.edit().putString("token.client", stringUser).apply();
+        saveModel("token.client", tokenApiModel);
         super.setUserToken(tokenApiModel);
     }
+
     public TokenApiModel getClientToken() {
         TokenApiModel tokenApiModel = super.getUserToken();
         if(tokenApiModel!=null) {
             return tokenApiModel;
         }
-        SharedPreferences sharedPreferences = androidContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        String token = sharedPreferences.getString("token.client", "");
-        Gson gson = new Gson();
-        tokenApiModel = gson.fromJson(token, TokenApiModel.class);
+        tokenApiModel = (TokenApiModel)readModel("token.client",TokenApiModel.class);
         setUserToken(tokenApiModel);
         return tokenApiModel;
     }
-//
-//    // USER TOKEN set/get
+
+    // USER TOKEN set/get
     public void setUserToken(TokenApiModel tokenApiModel) {
-        // save in SharedPrefererences
-        SharedPreferences sharedPreferences = androidContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        Gson gson = new Gson();
-        String stringUser = gson.toJson(tokenApiModel);
-        sharedPreferences.edit().putString("token.user", stringUser).apply();
+        saveModel("token.user", tokenApiModel);
         super.setUserToken(tokenApiModel);
     }
 
     public TokenApiModel getUserToken() {
-          TokenApiModel tokenApiModel = super.getUserToken();
-          if(tokenApiModel!=null) {
-              return tokenApiModel;
-          }
-        SharedPreferences sharedPreferences = androidContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        String token = sharedPreferences.getString("token.user", "");
-        Gson gson = new Gson();
-        tokenApiModel = gson.fromJson(token, TokenApiModel.class);
+        TokenApiModel tokenApiModel = super.getUserToken();
+        if(tokenApiModel!=null) {
+          return tokenApiModel;
+        }
+        tokenApiModel = (TokenApiModel)readModel("token.user",TokenApiModel.class);
         setUserToken(tokenApiModel);
         return tokenApiModel;
     }
@@ -101,11 +93,23 @@ public class AndroidApiContext extends InMemoryApiContext {
         AbstractApiContext.get().setClientCredentials(map);
     }
 
+    protected void saveModel(String prefName,Object model) {
+        SharedPreferences sharedPreferences = getSharedPreferences();
+        Gson gson = new Gson();
+        String jsonModel = gson.toJson(model);
+        sharedPreferences.edit().putString(prefName, jsonModel).apply();
+    }
+    protected Object readModel(String prefName,Class modelClass) {
+        SharedPreferences sharedPreferences = getSharedPreferences();
+        String jsonModel = sharedPreferences.getString(prefName, "");
+        Gson gson = new Gson();
+        return gson.fromJson(jsonModel, modelClass);
+    }
+
     private String getConfig(String name) {
         String val = "";
         try {
-            ApplicationInfo appInfo = androidContext.getPackageManager().getApplicationInfo(
-                    androidContext.getPackageName(), PackageManager.GET_META_DATA);
+            ApplicationInfo appInfo = androidContext.getPackageManager().getApplicationInfo(androidContext.getPackageName(), PackageManager.GET_META_DATA);
             if (appInfo.metaData != null) {
                 val = String.valueOf(appInfo.metaData.getString(name));
                 return val;
@@ -117,11 +121,8 @@ public class AndroidApiContext extends InMemoryApiContext {
     }
 
     public static void generateKeyHash(Context context, String packageName) {
-
         try {
-            PackageInfo info = context.getPackageManager().getPackageInfo(
-                    packageName,
-                    PackageManager.GET_SIGNATURES);
+            PackageInfo info = context.getPackageManager().getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
             for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
@@ -130,41 +131,31 @@ public class AndroidApiContext extends InMemoryApiContext {
         } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
 
         }
-
     }
 
-    @Override
-    public TokenApiModel getToken(String s) {
-        return null;
-    }
-
-    // TODO: @Vivek to get this from confi, similar to client id & secret
-    public String getHost(String moduleName) {
-        String h="";
-        Properties properties = new Properties();;
+    protected Properties getConfigProperties() {
+        if(configProperties==null) {
+            configProperties = new Properties();
+        }
         AssetManager assetManager = androidContext.getAssets();
         InputStream inputStream = null;
         try {
             inputStream = assetManager.open("config.properties");
-            properties.load(inputStream);
-
+            configProperties.load(inputStream);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        for(String key: properties.stringPropertyNames()){
-            if(key.startsWith("module.")){
-                String val = properties.getProperty(key);
-                System.out.println("Values ::" + val);
-                System.out.println("Module ::" +key);
-                if(moduleName.contains("identity")) {
-                    h="http://api.qa1.nbos.in/";
-                } else if(moduleName.contains("cafeteria")) {
-                    h="";
-                }
-            } else  {
-                return "http://api.qa1.nbos.in/";
-            }
-        }
-        return h;
+        return configProperties;
     }
+
+    public String getHost(String moduleName) {
+        Properties properties = getConfigProperties();
+        String h=properties.getProperty("module."+moduleName+".host");
+
+        if(h!=null&&h.length()>0) {
+            return h;
+        }
+        return "http://api.qa1.nbos.in/";
+    }
+
 }
