@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: "com.jfrog.bintray"
 apply plugin: 'com.github.dcendents.android-maven'
 
-version = "0.1.4"
+version = "0.2.2"
 
 android {
     compileSdkVersion 24
@@ -31,7 +31,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:24.0.0'
     testCompile 'junit:junit:4.12'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
@@ -43,10 +42,7 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'com.squareup.okhttp3:okhttp-urlconnection:3.3.1'
     compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
-    compile 'io.swagger:swagger-core:1.5.9'
-    compile 'io.swagger:swagger-jaxrs:1.5.9'
-    compile 'io.swagger:swagger-parser:1.0.20'
-    compile project(':idn-java-api')
+    compile 'in.wavelabs:idn-java-api:0.2.2'
 }
 
 def siteUrl = 'https://github.com/nbostech/wavelabs-android-client-api'      // Homepage URL of the library
@@ -63,7 +59,7 @@ install {
                 packaging 'aar'
 
                 // Add your description here
-                name 'in.wavelabs:idn' // TODO
+                name 'IDN Android API' // TODO
                 description = 'WaveLabs Identity Network' // TODO
                 url siteUrl
 
@@ -76,9 +72,14 @@ install {
                 }
                 developers {
                     developer {
-                        id 'vivekkiran' // TODO
-                        name 'Vivek Kiran' // TODO
-                        email 'vivek.kiran@outlook.com' // TODO
+                        id 'vineeln'
+                        name 'Vineel Nalla'
+                        email 'vineeln@nbostech.com'
+                    }
+                    developer {
+                        id 'vivekkiran'
+                        name 'Vivek Kiran'
+                        email 'vivek.kiran@outlook.com'
                     }
                 }
                 scm {
