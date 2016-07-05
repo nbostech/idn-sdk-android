@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: "com.jfrog.bintray"
 apply plugin: 'com.github.dcendents.android-maven'
 
-version = "0.2.2"
+version = "0.2.3"
 
 android {
     compileSdkVersion 24
@@ -42,7 +42,7 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'com.squareup.okhttp3:okhttp-urlconnection:3.3.1'
     compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
-    compile 'in.wavelabs:idn-java-api:0.2.2'
+    compile 'in.wavelabs:idn-java-api:0.2.3'
 }
 
 def siteUrl = 'https://github.com/nbostech/wavelabs-android-client-api'      // Homepage URL of the library
