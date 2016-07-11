@@ -54,32 +54,32 @@ public class AndroidApiContext extends InMemoryApiContext {
     // CLIENT TOKEN set/get
     public void setClientToken(TokenApiModel tokenApiModel) {
         saveModel("token.client", tokenApiModel);
-        super.setUserToken(tokenApiModel);
+        super.setClientToken(tokenApiModel);
     }
 
     public TokenApiModel getClientToken() {
-        TokenApiModel tokenApiModel = super.getUserToken();
+        TokenApiModel tokenApiModel = super.getClientToken();
         if(tokenApiModel!=null) {
             return tokenApiModel;
         }
         tokenApiModel = (TokenApiModel)readModel("token.client",TokenApiModel.class);
-        setUserToken(tokenApiModel);
+        super.setClientToken(tokenApiModel);  // lets save it in memory
         return tokenApiModel;
     }
 
     // USER TOKEN set/get
-    public void setUserToken(TokenApiModel tokenApiModel) {
+    public void setUserToken(String moduleName, TokenApiModel tokenApiModel) {
         saveModel("token.user", tokenApiModel);
-        super.setUserToken(tokenApiModel);
+        super.setUserToken(moduleName,tokenApiModel);
     }
 
-    public TokenApiModel getUserToken() {
-        TokenApiModel tokenApiModel = super.getUserToken();
+    public TokenApiModel getUserToken(String moduleName) {
+        TokenApiModel tokenApiModel = super.getUserToken(moduleName);
         if(tokenApiModel!=null) {
           return tokenApiModel;
         }
-        tokenApiModel = (TokenApiModel)readModel("token.user",TokenApiModel.class);
-        setUserToken(tokenApiModel);
+        tokenApiModel = (TokenApiModel)readModel("token.user."+moduleName,TokenApiModel.class);
+        super.setUserToken(moduleName,tokenApiModel);  // lets save it in memory
         return tokenApiModel;
     }
 
