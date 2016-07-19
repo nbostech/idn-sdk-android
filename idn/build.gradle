@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: "com.jfrog.bintray"
 apply plugin: 'com.github.dcendents.android-maven'
 
-version = "0.2.3"
+version = "0.2.7"
 
 android {
     compileSdkVersion 24
@@ -36,13 +36,9 @@ dependencies {
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support:support-annotations:24.0.0'
-    compile 'com.squareup.okhttp3:okhttp:3.3.1'
-    compile 'com.google.code.gson:gson:2.6.2'
-    compile 'com.squareup.retrofit2:retrofit:2.0.2'
-    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
-    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.3.1'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
-    compile 'in.wavelabs:idn-java-api:0.2.3'
+    compile 'in.wavelabs:idn-java-api:0.2.+'
+ //   compile project(':idn-java-api')
+
 }
 
 def siteUrl = 'https://github.com/nbostech/wavelabs-android-client-api'      // Homepage URL of the library
