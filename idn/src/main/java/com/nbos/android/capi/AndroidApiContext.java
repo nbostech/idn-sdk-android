@@ -38,13 +38,18 @@ public class AndroidApiContext extends InMemoryApiContext {
     Context androidContext;
     Properties configProperties;
 
+    public AndroidApiContext(final Context context, String name) {
+        super(name);
+        this.androidContext=context;
+    }
     public AndroidApiContext(final Context context) {
         this.androidContext=context;
     }
 
 
     public static void initialize(final Context context) {
-        IdnSDK.init(new AndroidApiContext(context));
+        IdnSDK.init(new AndroidApiContext(context,"app"));
+        IdnSDK.init(new AndroidApiContext(context,"api"));
     }
 
     protected SharedPreferences getSharedPreferences() {
@@ -90,7 +95,7 @@ public class AndroidApiContext extends InMemoryApiContext {
         String clientSecret = getConfig(APPLICATION_SECRET_PROPERTY);
         map.put("client_id",clientId);
         map.put("client_secret",clientSecret);
-        AbstractApiContext.get().setClientCredentials(map);
+        setClientCredentials(map);
     }
 
     protected void saveModel(String prefName,Object model) {
