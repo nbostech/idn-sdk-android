@@ -40,16 +40,17 @@ public class AndroidApiContext extends InMemoryApiContext {
 
     public AndroidApiContext(final Context context, String name) {
         super(name);
-        this.androidContext=context;
+        this.androidContext = context;
     }
+
     public AndroidApiContext(final Context context) {
-        this.androidContext=context;
+        this.androidContext = context;
     }
 
 
     public static void initialize(final Context context) {
-        IdnSDK.init(new AndroidApiContext(context,"app"));
-        IdnSDK.init(new AndroidApiContext(context,"api"));
+        IdnSDK.init(new AndroidApiContext(context, "app"));
+        IdnSDK.init(new AndroidApiContext(context, "api"));
     }
 
     protected SharedPreferences getSharedPreferences() {
@@ -64,10 +65,10 @@ public class AndroidApiContext extends InMemoryApiContext {
 
     public TokenApiModel getClientToken() {
         TokenApiModel tokenApiModel = super.getClientToken();
-        if(tokenApiModel!=null) {
+        if (tokenApiModel != null) {
             return tokenApiModel;
         }
-        tokenApiModel = (TokenApiModel)readModel("token.client",TokenApiModel.class);
+        tokenApiModel = (TokenApiModel) readModel("token.client", TokenApiModel.class);
         super.setClientToken(tokenApiModel);  // lets save it in memory
         return tokenApiModel;
     }
@@ -75,16 +76,16 @@ public class AndroidApiContext extends InMemoryApiContext {
     // USER TOKEN set/get
     public void setUserToken(String moduleName, TokenApiModel tokenApiModel) {
         saveModel("token.user", tokenApiModel);
-        super.setUserToken(moduleName,tokenApiModel);
+        super.setUserToken(moduleName, tokenApiModel);
     }
 
     public TokenApiModel getUserToken(String moduleName) {
         TokenApiModel tokenApiModel = super.getUserToken(moduleName);
-        if(tokenApiModel!=null) {
-          return tokenApiModel;
+        if (tokenApiModel != null) {
+            return tokenApiModel;
         }
-        tokenApiModel = (TokenApiModel)readModel("token.user."+moduleName,TokenApiModel.class);
-        super.setUserToken(moduleName,tokenApiModel);  // lets save it in memory
+        tokenApiModel = (TokenApiModel) readModel("token.user." + moduleName, TokenApiModel.class);
+        super.setUserToken(moduleName, tokenApiModel);  // lets save it in memory
         return tokenApiModel;
     }
 
@@ -93,18 +94,19 @@ public class AndroidApiContext extends InMemoryApiContext {
         HashMap map = new HashMap();
         String clientId = getConfig(APPLICATION_ID_PROPERTY);
         String clientSecret = getConfig(APPLICATION_SECRET_PROPERTY);
-        map.put("client_id",clientId);
-        map.put("client_secret",clientSecret);
+        map.put("client_id", clientId);
+        map.put("client_secret", clientSecret);
         setClientCredentials(map);
     }
 
-    protected void saveModel(String prefName,Object model) {
+    protected void saveModel(String prefName, Object model) {
         SharedPreferences sharedPreferences = getSharedPreferences();
         Gson gson = new Gson();
         String jsonModel = gson.toJson(model);
         sharedPreferences.edit().putString(prefName, jsonModel).apply();
     }
-    protected Object readModel(String prefName,Class modelClass) {
+
+    protected Object readModel(String prefName, Class modelClass) {
         SharedPreferences sharedPreferences = getSharedPreferences();
         String jsonModel = sharedPreferences.getString(prefName, "");
         Gson gson = new Gson();
@@ -139,7 +141,7 @@ public class AndroidApiContext extends InMemoryApiContext {
     }
 
     protected Properties getConfigProperties() {
-        if(configProperties==null) {
+        if (configProperties == null) {
             configProperties = new Properties();
         }
         AssetManager assetManager = androidContext.getAssets();
@@ -155,9 +157,9 @@ public class AndroidApiContext extends InMemoryApiContext {
 
     public String getHost(String moduleName) {
         Properties properties = getConfigProperties();
-        String h=properties.getProperty("module."+moduleName+".host");
+        String h = properties.getProperty("module." + moduleName + ".host");
 
-        if(h!=null&&h.length()>0) {
+        if (h != null && h.length() > 0) {
             return h;
         }
         return "http://api.qa1.nbos.in/";
