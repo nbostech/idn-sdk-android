@@ -13,7 +13,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -39,6 +41,8 @@ dependencies {
     //   compile project(':idn-java-api')
     compile project(':idn-java-api')
 }
+
+
 
 def siteUrl = 'https://github.com/nbostech/wavelabs-android-client-api'      // Homepage URL of the library
 def gitUrl = 'https://github.com/nbostech/wavelabs-android-client-api.git'   // Git repository URL

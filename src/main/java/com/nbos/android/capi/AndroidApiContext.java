@@ -7,13 +7,11 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.content.res.AssetManager;
-import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.nbos.capi.api.v0.AbstractApiContext;
 import com.nbos.capi.api.v0.IdnSDK;
 import com.nbos.capi.api.v0.InMemoryApiContext;
 import com.nbos.capi.api.v0.models.TokenApiModel;
@@ -22,8 +20,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Properties;
+
+import dalvik.system.DexFile;
 
 /**
  * Created by vivekkiran on 6/25/16.
@@ -91,6 +93,7 @@ public class AndroidApiContext extends InMemoryApiContext {
 
 
     public void init() {
+        getClassesOfPackage("com.nbos.capi.api.v0");
         HashMap<String,String> map = new HashMap<>();
         String clientId = getConfig(APPLICATION_ID_PROPERTY);
         String clientSecret = getConfig(APPLICATION_SECRET_PROPERTY);
@@ -164,5 +167,23 @@ public class AndroidApiContext extends InMemoryApiContext {
         }
         return "http://api.qa1.nbos.in/";
     }
+    private String[] getClassesOfPackage(String packageName) {
+        ArrayList<String> classes = new ArrayList<>();
+        try {
+            String packageCodePath = androidContext.getPackageCodePath();
+            DexFile df = new DexFile(packageCodePath);
+            for (Enumeration<String> iter = df.entries(); iter.hasMoreElements(); ) {
+                String className = iter.nextElement();
+                if (className.contains(packageName)) {
+                    classes.add(className.substring(className.lastIndexOf(".") + 1, className.length()));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return classes.toArray(new String[classes.size()]);
+    }
+
 
 }
