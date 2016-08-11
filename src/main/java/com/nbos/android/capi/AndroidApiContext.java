@@ -93,7 +93,7 @@ public class AndroidApiContext extends InMemoryApiContext {
 
 
     public void init() {
-        getClassesOfPackage("com.nbos.capi.api.v0");
+        getClassesOfPackage("com.nbos.capi.api.v0.modules");
         HashMap<String,String> map = new HashMap<>();
         String clientId = getConfig(APPLICATION_ID_PROPERTY);
         String clientSecret = getConfig(APPLICATION_SECRET_PROPERTY);
