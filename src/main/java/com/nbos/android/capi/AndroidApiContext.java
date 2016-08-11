@@ -91,7 +91,7 @@ public class AndroidApiContext extends InMemoryApiContext {
 
 
     public void init() {
-        HashMap map = new HashMap();
+        HashMap<String,String> map = new HashMap<>();
         String clientId = getConfig(APPLICATION_ID_PROPERTY);
         String clientSecret = getConfig(APPLICATION_SECRET_PROPERTY);
         map.put("client_id", clientId);
