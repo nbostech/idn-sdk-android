@@ -36,9 +36,8 @@ dependencies {
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support:support-annotations:24.1.1'
-    compile 'in.wavelabs:idn-java-api:0.2.+'
- //   compile project(':idn-java-api')
-
+    //   compile project(':idn-java-api')
+    compile project(':idn-java-api')
 }
 
 def siteUrl = 'https://github.com/nbostech/wavelabs-android-client-api'      // Homepage URL of the library

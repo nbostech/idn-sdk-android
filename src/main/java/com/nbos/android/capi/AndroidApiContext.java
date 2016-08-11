@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 import com.nbos.capi.api.v0.AbstractApiContext;
 import com.nbos.capi.api.v0.IdnSDK;
 import com.nbos.capi.api.v0.InMemoryApiContext;
-import com.nbos.capi.api.v0.TokenApiModel;
+import com.nbos.capi.api.v0.models.TokenApiModel;
 
 import java.io.IOException;
 import java.io.InputStream;
