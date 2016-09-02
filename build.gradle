@@ -6,7 +6,7 @@ version = "0.2.7"
 
 android {
     compileSdkVersion 24
-    buildToolsVersion '24'
+    buildToolsVersion '24.0.1'
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 24
@@ -33,20 +33,20 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:24.1.1'
+    compile 'com.android.support:appcompat-v7:24.2.0'
     testCompile 'junit:junit:4.12'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     androidTestCompile 'com.android.support.test:runner:0.5'
-    androidTestCompile 'com.android.support:support-annotations:24.1.1'
+    androidTestCompile 'com.android.support:support-annotations:24.2.0'
     //   compile project(':idn-java-api')
-    compile project(':idn-java-api')
+    compile project(':ids-sdk-java')
 }
 
 
 
 def siteUrl = 'https://github.com/nbostech/wavelabs-android-client-api'      // Homepage URL of the library
 def gitUrl = 'https://github.com/nbostech/wavelabs-android-client-api.git'   // Git repository URL
-group = "in.wavelabs"                                          // Maven Group ID for the artifact
+group = "io.nbos"                                          // Maven Group ID for the artifact
 
 install {
     repositories.mavenInstaller {

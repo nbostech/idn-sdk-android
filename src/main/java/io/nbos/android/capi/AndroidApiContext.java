@@ -1,4 +1,4 @@
-package com.nbos.android.capi;
+package io.nbos.android.capi;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -12,9 +12,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.nbos.capi.api.v0.IdnSDK;
-import com.nbos.capi.api.v0.InMemoryApiContext;
-import com.nbos.capi.api.v0.models.TokenApiModel;
+
+import io.nbos.capi.api.v0.IdnSDK;
+import io.nbos.capi.api.v0.InMemoryApiContext;
+import io.nbos.capi.api.v0.models.TokenApiModel;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -93,7 +94,7 @@ public class AndroidApiContext extends InMemoryApiContext {
 
 
     public void init() {
-        getClassesOfPackage("com.nbos.capi.api.v0.modules");
+        getClassesOfPackage("io.nbos.capi.api.v0.modules");
         HashMap<String,String> map = new HashMap<>();
         String clientId = getConfig(APPLICATION_ID_PROPERTY);
         String clientSecret = getConfig(APPLICATION_SECRET_PROPERTY);
@@ -175,7 +176,7 @@ public class AndroidApiContext extends InMemoryApiContext {
             for (Enumeration<String> iter = df.entries(); iter.hasMoreElements(); ) {
                 String className = iter.nextElement();
                 if (className.contains(packageName)) {
-                    classes.add(className.substring(className.lastIndexOf(".") + 1, className.length()));
+                    classes.add(className.substring(className.lastIndexOf("") + 1, className.length()));
                 }
             }
         } catch (IOException e) {
