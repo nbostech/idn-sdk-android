@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: "com.jfrog.bintray"
 apply plugin: 'com.github.dcendents.android-maven'
 
-version = "0.2.7"
+version = "0.0.1"
 
 android {
     compileSdkVersion 24
@@ -39,7 +39,7 @@ dependencies {
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support:support-annotations:24.2.0'
     //   compile project(':idn-java-api')
-    compile project(':ids-sdk-java')
+    compile 'io.nbos:ids-sdk-java:0.0.1'
 }
 
 
@@ -58,8 +58,8 @@ install {
                 packaging 'aar'
 
                 // Add your description here
-                name 'IDN Android API' // TODO
-                description = 'WaveLabs Identity Network' // TODO
+                name 'IDS Android Bridge for NBOS.IO' // TODO
+                description = 'IDS Android Bridge' // TODO
                 url siteUrl
 
                 // Set your license
